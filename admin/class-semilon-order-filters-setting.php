@@ -19,6 +19,8 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
             );
 
             add_filter( 'plugin_action_links_' . $this->id, array( $this, 'action_links' ) );
+
+            add_action( 'woocommerce_settings_tabs', array( $this, 'add_tab' ), 10 );
         }
 
         /**
@@ -41,6 +43,27 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
             );
 
             return array_merge( $plugin_links, $links );
+        }
+
+        /**
+         * @access public
+         * @return void
+         */
+        public function add_tab() {
+
+            $settings_slug = 'woocommerce';
+
+            if ( version_compare( WOOCOMMERCE_VERSION, "2.1.0" ) >= 0 ) {
+
+                $settings_slug = 'wc-settings';
+            }
+
+            foreach ( $this->settings_tabs as $name => $label ) {
+                $class	 = 'nav-tab';
+                if ( $this->current_tab == $name )
+                    $class	 .= ' nav-tab-active';
+                echo '<a href="' . admin_url( 'admin.php?page=' . $settings_slug . '&tab=' . $name ) . '" class="' . $class . '">' . $label . '</a>';
+            }
         }
     }
 }
