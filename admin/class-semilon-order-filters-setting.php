@@ -73,6 +73,36 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
 
             return str_replace( $filter_base, '', $current_filter );
         }
+
+        /**
+         * Prepare form fields to be used in the various tabs.
+         */
+        public function init_form_fields() {
+
+            // Define settings
+            $this->fields[ $this->id ] = array(
+                array(
+                    'name' => __('Semilon Order Filters for WooCommerce', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'type' => 'title',
+                    'desc' => __('You can manage filters. These are applied to the WooCommerce Order List. Every items have tick the filters that you want to apply.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'id' => $this->id . '_options' ),
+                array(
+                    'name'		 => __('Countries', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'desc' => __('Filter countries buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'id'		 => $this->id . '_countries',
+                    'type'		 => 'checkbox',
+                    'default'	 => 'yse'
+                ),
+                array(
+                    'name'		 => __('Payment Method', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'desc' => __('Filter payment methods use in orders.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
+                    'id'		 => $this->id . '_payment_method',
+                    'type'		 => 'checkbox',
+                    'default'	 => 'yse'
+                ),
+                array( 'type' => 'sectionend', 'id' => $this->id . '_options' ),
+            ); // End settings
+        }
     }
 }
 
