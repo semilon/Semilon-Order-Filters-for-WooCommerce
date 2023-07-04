@@ -21,6 +21,10 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
             add_filter( 'plugin_action_links_' . $this->id, array( $this, 'action_links' ) );
 
             add_action( 'woocommerce_settings_tabs', array( $this, 'add_tab' ), 10 );
+
+            foreach ( $this->settings_tabs as $name => $label ) {
+                add_action( 'woocommerce_settings_tabs_' . $name, array( $this, 'settings_tab_action' ), 10 );
+            }
         }
 
         /**
@@ -64,6 +68,28 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
                     $class	 .= ' nav-tab-active';
                 echo '<a href="' . admin_url( 'admin.php?page=' . $settings_slug . '&tab=' . $name ) . '" class="' . $class . '">' . $label . '</a>';
             }
+        }
+
+        /**
+         * @access public
+         * @return void
+         */
+        public function settings_tab_action() {
+
+            global $woocommerce_settings;
+
+            // Determine the current tab in effect.
+            $current_tab = $this->get_tab_in_view( current_filter(), 'woocommerce_settings_tabs_' );
+
+            // Load the prepared form fields.
+            $this->init_form_fields();
+
+            if ( is_array( $this->fields ) )
+                foreach ( $this->fields as $k => $v )
+                    $woocommerce_settings[ $k ] = $v;
+
+            // Display settings for this tab (make sure to add the settings to the tab).
+            woocommerce_admin_fields( $woocommerce_settings[ $current_tab ] );
         }
 
         /**
