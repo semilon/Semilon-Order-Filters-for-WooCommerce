@@ -19,3 +19,14 @@
  * Copyright:       © 2023 https://Semilon.dev/.
  * License:         MIT License
  */
+
+if(!defined('ABSPATH'))
+    exit;
+
+if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
+    class Semilon_Order_Filters_For_Woocommerce
+    {
+    }
+
+    new Semilon_Order_Filters_For_Woocommerce();
+}
