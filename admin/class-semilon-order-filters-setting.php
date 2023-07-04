@@ -24,6 +24,7 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
 
             foreach ( $this->settings_tabs as $name => $label ) {
                 add_action( 'woocommerce_settings_tabs_' . $name, array( $this, 'settings_tab_action' ), 10 );
+                add_action( 'woocommerce_update_options_' . $name, array( $this, 'save_settings' ), 10 );
             }
         }
 
@@ -128,6 +129,20 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
                 ),
                 array( 'type' => 'sectionend', 'id' => $this->id . '_options' ),
             ); // End settings
+        }
+
+        /**
+         * Save settings in a single field in the database for each tab's fields (one field per tab).
+         */
+        public function save_settings() {
+
+            global $woocommerce_settings;
+
+            // Make sure our settings fields are recognised.
+            $this->add_settings_fields();
+
+            $current_tab = $this->get_tab_in_view( current_filter(), 'woocommerce_update_options_' );
+            woocommerce_update_options( $woocommerce_settings[ $current_tab ] );
         }
 
         /**
