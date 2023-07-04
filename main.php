@@ -34,6 +34,7 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
         public function __construct()
         {
             add_action('admin_notices', array($this, 'semilon_check_woocommece_active'));
+            $this->setting();
         }
 
         public function semilon_check_woocommece_active()
@@ -41,6 +42,12 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
             if (!is_plugin_active('woocommerce/woocommerce.php')) {
                 esc_html_e("<div class='error'><p><strong>Semilon Country Sales Report For WooCommerce</strong> requires <strong> WooCommerce active plugin</strong> </p></div>");
             }
+        }
+
+        private function setting()
+        {
+            require_once __DIR__ . '/admin/class-semilon-order-filters-setting.php';
+            new Semilon_Order_Filters_Setting();
         }
     }
 
