@@ -129,6 +129,21 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
                 array( 'type' => 'sectionend', 'id' => $this->id . '_options' ),
             ); // End settings
         }
+
+        /**
+         * Add settings fields for each tab.
+         */
+        public function add_settings_fields() {
+
+            global $woocommerce_settings;
+
+            // Load the prepared form fields.
+            $this->init_form_fields();
+
+            if ( is_array( $this->fields ) )
+                foreach ( $this->fields as $k => $v )
+                    $woocommerce_settings[ $k ] = $v;
+        }
     }
 }
 
