@@ -7,6 +7,10 @@
 if (!class_exists('Semilon_Order_Filters_Setting')) {
     class Semilon_Order_Filters_Setting
     {
+        public function __construct()
+        {
+            $this->id = SEMILON_ORDER_FILTERS_ID;
+        }
     }
 }
 
