@@ -65,6 +65,14 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
                 echo '<a href="' . admin_url( 'admin.php?page=' . $settings_slug . '&tab=' . $name ) . '" class="' . $class . '">' . $label . '</a>';
             }
         }
+
+        /**
+         * Get the tab current in view/processing.
+         */
+        public function get_tab_in_view( $current_filter, $filter_base ) {
+
+            return str_replace( $filter_base, '', $current_filter );
+        }
     }
 }
 
