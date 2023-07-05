@@ -10,6 +10,21 @@ if (!class_exists('Semilon_Order_Filters_Support')) {
         public function __construct()
         {
             add_filter( 'plugin_action_links_' . SEMILON_ORDER_FILTERS_PLUGIN_BASENAME, array( $this, 'action_links' ) );
+            add_action( 'admin_menu', array($this, 'add_support_to_admin_menu_item') );
+        }
+
+        public function add_support_to_admin_menu_item()
+        {
+            add_menu_page(
+                __( 'Semilon support page', SEMILON_ORDER_FILTERS_TRANSLATE_ID ),
+                __( 'Semilon menu', SEMILON_ORDER_FILTERS_TRANSLATE_ID ),
+                'manage_options',
+                'semilon-support',
+                array($this, 'support_template'),
+                'dashicons-schedule',
+                3
+            );
+            remove_menu_page( 'semilon-support' );
         }
 
         public function support_template() {
