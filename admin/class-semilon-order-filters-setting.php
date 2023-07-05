@@ -18,7 +18,7 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
                 $this->id => 'Order Filters'
             );
 
-            add_filter( 'plugin_action_links_' . $this->id, array( $this, 'action_links' ) );
+            add_filter( 'plugin_action_links_' . SEMILON_ORDER_FILTERS_PLUGIN_BASENAME, array( $this, 'action_links' ) );
 
             add_action( 'woocommerce_settings_tabs', array( $this, 'add_tab' ), 10 );
 
@@ -37,17 +37,15 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
         public function action_links( $links ) {
 
             $settings_slug = 'woocommerce';
-
             if ( version_compare( WOOCOMMERCE_VERSION, "2.1.0" ) >= 0 ) {
-
                 $settings_slug = 'wc-settings';
             }
-
-            $plugin_links = array(
-                '<a href="' . admin_url( 'admin.php?page=' . $settings_slug . '&tab=' . $this->id ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>',
-            );
+            $plugin_links[] = '<a href="'
+                                . admin_url( 'admin.php?page=' . $settings_slug . '&tab=' . $this->id )
+                                . '">' . __('Settings', SEMILON_ORDER_FILTERS_TRANSLATE_ID) . '</a>';
 
             return array_merge( $plugin_links, $links );
+
         }
 
         /**
