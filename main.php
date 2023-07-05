@@ -37,6 +37,7 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
         {
             add_action('admin_notices', array($this, 'semilon_check_woocommece_active'));
             $this->setting();
+            $this->support();
         }
 
         public function semilon_check_woocommece_active()
@@ -50,6 +51,12 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
         {
             require_once __DIR__ . '/admin/class-semilon-order-filters-setting.php';
             new Semilon_Order_Filters_Setting();
+        }
+
+        private function support()
+        {
+            require_once __DIR__ . '/admin/class-semilon-order-filters-support.php';
+            new Semilon_Order_Filters_Support();
         }
     }
 
