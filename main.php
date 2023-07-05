@@ -28,6 +28,7 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
     define( 'SEMILON_ORDER_FILTERS_IS_ACTIVE', in_array('semilon-order-filters-for-woocommerce/main.php', apply_filters('active_plugins', get_option('active_plugins'))) );
     define( 'SEMILON_ORDER_FILTERS_ID', 'semilon_order_filters' );
     define( 'SEMILON_ORDER_FILTERS_TRANSLATE_ID', 'semilon-order-filters' );
+    define( 'SEMILON_ORDER_FILTERS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
     class Semilon_Order_Filters_For_Woocommerce
     {
