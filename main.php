@@ -31,6 +31,8 @@ if(!class_exists('Semilon_Order_Filters_For_Woocommerce')) {
     define( 'SEMILON_ORDER_FILTERS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
     define( 'SEMILON_ORDER_FILTERS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
+    $Semilon_order_filters_fields = array();
+
     class Semilon_Order_Filters_For_Woocommerce
     {
         public function __construct()
