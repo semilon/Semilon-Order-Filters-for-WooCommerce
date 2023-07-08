@@ -7,6 +7,8 @@
 if (!class_exists('Semilon_Order_Filters_Manager')) {
     class Semilon_Order_Filters_Manager
     {
+        private $base = __DIR__ . DIRECTORY_SEPARATOR . 'filters';
+
         public function __construct()
         {
         }
