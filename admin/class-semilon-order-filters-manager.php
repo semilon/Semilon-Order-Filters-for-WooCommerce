@@ -11,6 +11,7 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
 
         public function __construct()
         {
+            $this->list();
         }
 
         private function list($exceptions = array())
