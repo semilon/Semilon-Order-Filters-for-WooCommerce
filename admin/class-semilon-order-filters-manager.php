@@ -11,6 +11,12 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
         {
         }
 
+        private function fetch_filter_name($file)
+        {
+            $filter = preg_replace('/class-semilon-order-filters-([a-z\-]+).php/i', '${1}', $file);
+            return implode('_', explode('-', $filter));
+        }
+
         private function fetch_class_name($file)
         {
             $class = preg_replace('/class-semilon-order-filters-([a-z\-]+).php/i', '${1}', $file);
