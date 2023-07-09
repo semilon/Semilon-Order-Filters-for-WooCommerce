@@ -11,7 +11,9 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
 
         public function __construct()
         {
-            $this->list();
+            if($this->check_page('post_type', 'shop_order') || $this->check_page('tab', 'semilon_order_filters')) {
+                $this->list();
+            }
         }
 
         private function list($exceptions = array())
@@ -65,6 +67,12 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
             }
 
             return $status;
+        }
+
+        private function check_page($key, $value)
+        {
+            $get_val = sanitize_text_field( isset($_GET[$key]) ? $_GET[$key] : '');
+            return $get_val == $value;
         }
     }
 }
