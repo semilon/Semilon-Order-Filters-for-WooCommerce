@@ -56,6 +56,15 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
             $class = implode('_', explode(' ', $class));
             return 'Semilon_Order_Filters_' . $class;
         }
+
+        private function load_filter($file) {
+            $filter = $this->fetch_filter_name($file);
+            $object = $this->fetch_class_name($file);
+
+            $active = get_option(SEMILON_ORDER_FILTERS_ID . '_' . $filter) === 'yes';
+            require_once($this->base . DIRECTORY_SEPARATOR . $file);
+            return (new $object($active))->field;
+        }
     }
 }
 
