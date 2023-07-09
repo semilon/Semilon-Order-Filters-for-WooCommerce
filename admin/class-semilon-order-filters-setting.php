@@ -105,28 +105,16 @@ if (!class_exists('Semilon_Order_Filters_Setting')) {
         public function init_form_fields() {
 
             // Define settings
-            $this->fields[ $this->id ] = array(
+            GLOBAL $Semilon_order_filters_fields;
+            $this->fields[ $this->id ] = array_merge(array(
                 array(
                     'name' => __('Semilon Order Filters for WooCommerce', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
                     'type' => 'title',
                     'desc' => __('You can manage filters. These are applied to the WooCommerce Order List. Every items have tick the filters that you want to apply.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
-                    'id' => $this->id . '_options' ),
-                array(
-                    'name'		 => __('Countries', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
-                    'desc' => __('Filter countries buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
-                    'id'		 => $this->id . '_countries',
-                    'type'		 => 'checkbox',
-                    'default'	 => 'yse'
-                ),
-                array(
-                    'name'		 => __('Payment Method', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
-                    'desc' => __('Filter payment methods use in orders.', SEMILON_ORDER_FILTERS_TRANSLATE_ID),
-                    'id'		 => $this->id . '_payment_method',
-                    'type'		 => 'checkbox',
-                    'default'	 => 'yse'
-                ),
-                array( 'type' => 'sectionend', 'id' => $this->id . '_options' ),
-            ); // End settings
+                    'id' => $this->id . '_options' )
+            ), $Semilon_order_filters_fields); // End settings
+
+            $this->fields[ $this->id ][] = array( 'type' => 'sectionend', 'id' => $this->id . '_options' );
         }
 
         /**
