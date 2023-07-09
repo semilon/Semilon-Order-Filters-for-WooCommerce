@@ -34,9 +34,9 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
                         'class' => $object,
                     ];*/
 
-                    $options = get_option(SEMILON_ORDER_FILTERS_ID . '_' . $filter) === 'yes';
+                    $active = get_option(SEMILON_ORDER_FILTERS_ID . '_' . $filter) === 'yes';
                     require_once($this->base . DIRECTORY_SEPARATOR . $file);
-                    $filter = new $object($options);
+                    $filter = new $object($active);
                     $Semilon_order_filters_fields[] = $filter->field;
                 }
             }
