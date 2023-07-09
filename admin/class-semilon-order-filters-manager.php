@@ -54,6 +54,18 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
             require_once($this->base . DIRECTORY_SEPARATOR . $file);
             return (new $object($active))->field;
         }
+
+        private function get_filter_status($filter)
+        {
+            $option_name = SEMILON_ORDER_FILTERS_ID . '_' . $filter;
+            $status = get_option($option_name, '#');
+            if($status === '#') {
+                update_option($option_name, 'yes');
+                $status = 'yes';
+            }
+
+            return $status;
+        }
     }
 }
 
