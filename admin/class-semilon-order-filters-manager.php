@@ -31,6 +31,20 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
             }
         }
 
+        private function get_files_list()
+        {
+            $files = scandir($this->base);
+
+            $last_file = count($files) - 1;
+            if(str_contains($files[$last_file], '_')) {
+                unset($files[$last_file]);
+            }
+            unset($files[0]);
+            unset($files[1]);
+
+            return $files;
+        }
+
         private function fetch_filter_name($file)
         {
             $filter = preg_replace('/class-semilon-order-filters-([a-z\-]+).php/i', '${1}', $file);
