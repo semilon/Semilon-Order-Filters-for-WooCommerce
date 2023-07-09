@@ -18,13 +18,9 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
 
         private function list($exceptions = array())
         {
-            $files = scandir($this->base);
-            unset($files[0]);
-            unset($files[1]);
-
             GLOBAL $Semilon_order_filters_fields;
 
-            foreach ($files as $file) {
+            foreach ($this->get_files_list() as $file) {
                 if (is_file($this->base . DIRECTORY_SEPARATOR . $file) && !in_array($file, $exceptions)) {
                     $Semilon_order_filters_fields[] = $this->load_filter($file);
                 }
