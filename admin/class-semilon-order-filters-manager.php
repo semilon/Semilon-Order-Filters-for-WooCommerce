@@ -22,11 +22,9 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
             unset($files[0]);
             unset($files[1]);
 
-            $list = array();
-
             GLOBAL $Semilon_order_filters_fields;
 
-            foreach ($files as $index => $file) {
+            foreach ($files as $file) {
                 if (is_file($this->base . DIRECTORY_SEPARATOR . $file) && !in_array($file, $exceptions)) {
                     $Semilon_order_filters_fields[] = $this->load_filter($file);
                 }
