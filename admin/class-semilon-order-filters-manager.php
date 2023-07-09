@@ -26,18 +26,7 @@ if (!class_exists('Semilon_Order_Filters_Manager')) {
 
             foreach ($files as $index => $file) {
                 if (is_file($this->base . DIRECTORY_SEPARATOR . $file) && !in_array($file, $exceptions)) {
-                    $filter = $this->fetch_filter_name($file);
-                    $object = $this->fetch_class_name($file);
-                    /*$list[] = [
-                        'file' => $file,
-                        'filter'=> $filter,
-                        'class' => $object,
-                    ];*/
-
-                    $active = get_option(SEMILON_ORDER_FILTERS_ID . '_' . $filter) === 'yes';
-                    require_once($this->base . DIRECTORY_SEPARATOR . $file);
-                    $filter = new $object($active);
-                    $Semilon_order_filters_fields[] = $filter->field;
+                    $Semilon_order_filters_fields[] = $this->load_filter($file);
                 }
             }
         }
