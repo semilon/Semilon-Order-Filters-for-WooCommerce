@@ -16,6 +16,10 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         public function filter_by_item()
         {
         }
+
+        protected function get_list()
+        {
+        }
     }
 }
 
