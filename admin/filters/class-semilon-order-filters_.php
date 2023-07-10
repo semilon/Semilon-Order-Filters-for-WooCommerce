@@ -56,6 +56,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             $this->item_tags = $tags;
             return $tags;
         }
+        public function validate_fetch_items($fetch_items) {
+            return $fetch_items;
+        }
     }
 }
 
