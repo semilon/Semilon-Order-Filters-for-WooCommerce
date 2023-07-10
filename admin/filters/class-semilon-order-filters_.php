@@ -21,6 +21,14 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         protected function get_list()
         {
         }
+        private function generate_item_tags() {
+            $tags = [];
+            foreach($this->item_tags as $key=>$value){
+                $tags[] = [$key, $value];
+            }
+            $this->item_tags = $tags;
+            return $tags;
+        }
     }
 }
 
