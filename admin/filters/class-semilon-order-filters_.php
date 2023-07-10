@@ -21,6 +21,32 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         protected function get_list()
         {
             $item_tags = $this->generate_item_tags();
+            global $wpdb;
+
+            $joins = '';
+            $wheres= '';
+            foreach ($item_tags as $item_tag) {
+                $joins .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tag[0]} ON {$item_tag[0]}.post_id=posts.ID ";
+                $wheres.= " AND {$item_tag[0]}.meta_key ='{$item_tag[1]}' ";
+            }
+
+
+            $query = "
+				SELECT 
+				{$item_tags[0][0]}.meta_value as '{$item_tags[0][0]}'
+				FROM {$wpdb->prefix}posts as posts
+				{$joins}
+				WHERE 1=1
+				AND posts.post_type ='shop_order'
+				{$wheres}
+				GROUP BY {$item_tags[0][0]}.meta_value
+				Order BY {$item_tags[0][0]}.meta_value ASC";
+
+            //$query = $wpdb->prepare($query );
+            //$rows = $wpdb->get_results( $wpdb->prepare($query ));
+            $rows = $wpdb->get_results($query );
+
+            return $rows;
         }
         private function generate_item_tags() {
             $tags = [];
