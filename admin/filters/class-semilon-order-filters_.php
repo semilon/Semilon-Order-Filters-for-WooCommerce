@@ -106,6 +106,24 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $options;
         }
         // --------------------------------------- /restrict_manage_posts
+
+        /**
+         * Modify SQL JOIN for filtering the orders by any country name
+         *
+         *
+         * @param string $join JOIN part of the sql query
+         * @return string $join modified JOIN part of sql query
+         */
+        function add_item_join($join){
+            global $typenow, $wpdb;
+
+            if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
+                $item_tags = $this->generate_item_tags();
+                $join .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tags[0][0]} ON {$item_tags[0][0]}.post_id={$wpdb->posts}.ID ";
+            }
+
+            return $join;
+        }
     }
 }
 
