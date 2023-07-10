@@ -12,6 +12,10 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         public function __construct($isActive)
         {
         }
+
+        public function filter_by_item()
+        {
+        }
     }
 }
 
