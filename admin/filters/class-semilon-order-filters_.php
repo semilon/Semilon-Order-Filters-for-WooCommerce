@@ -46,6 +46,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             //$rows = $wpdb->get_results( $wpdb->prepare($query ));
             $rows = $wpdb->get_results($query );
 
+            $rows = $this->validate_fetch_items($rows);
+
             return $rows;
         }
         private function generate_item_tags() {
