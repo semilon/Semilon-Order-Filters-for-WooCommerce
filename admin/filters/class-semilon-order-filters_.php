@@ -62,6 +62,11 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $rows;
         }
         private function generate_item_tags() {
+            $keys = array_keys($this->item_tags);
+            if(gettype($keys[0]) === 'integer'){
+                return $this->item_tags;
+            }
+
             $tags = [];
             foreach($this->item_tags as $key=>$value){
                 $tags[] = [$key, $value];
