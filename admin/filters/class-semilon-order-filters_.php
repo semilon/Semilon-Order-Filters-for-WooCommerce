@@ -19,6 +19,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             if ( $isActive && is_admin() && ! defined( 'DOING_AJAX' ) ) {
                 // adds the country filtering dropdown to the orders page
                 add_action( 'restrict_manage_posts', array( $this, 'filter_by_item' ) );
+
+                /*join filter*/
+                add_filter( 'posts_join',  array( $this, 'add_item_join' ) );
             }
         }
 
