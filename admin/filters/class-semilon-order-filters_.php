@@ -61,6 +61,21 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         public function validate_fetch_items($fetch_items) {
             return $fetch_items;
         }
+
+        protected function get_option_tags($items, $name) {
+            $option_value = $this->item_tags[0][0];
+            $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
+
+            $options = '';
+            foreach($items as $item){
+                $value = esc_attr($item->$option_value);
+                $selected = esc_attr( isset( $_GET[$name] ) ? selected( $item->$option_value, $_GET[$name], false ) : '' );
+                $caption = esc_html( isset($item->$option_caption) ? $item->$option_caption : $item->$option_value );
+                $options .= "<option value='{$value}' {$selected}>{$caption}</option>";
+            }
+
+            return $options;
+        }
     }
 }
 
