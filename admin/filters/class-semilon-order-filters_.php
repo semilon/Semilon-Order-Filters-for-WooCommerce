@@ -9,7 +9,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
     {
         public $field = array();
 
-        public function __construct($isActive)
+        protected function __construct($isActive)
         {
             $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $this->load_filter($isActive);
@@ -79,7 +79,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             $this->item_tags = $tags;
             return $tags;
         }
-        public function validate_fetch_items($fetch_items) {
+        protected function validate_fetch_items($fetch_items) {
             return $fetch_items;
         }
 
@@ -119,7 +119,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @param string $join JOIN part of the sql query
          * @return string $join modified JOIN part of sql query
          */
-        function add_item_join($join){
+        public function add_item_join($join){
             global $typenow, $wpdb;
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
@@ -137,7 +137,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @param string $where WHERE part of the sql query
          * @return string $where modified WHERE part of sql query
          */
-        function add_item_where($where){
+        public function add_item_where($where){
             global $typenow, $wpdb;
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
