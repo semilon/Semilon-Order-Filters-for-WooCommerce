@@ -21,6 +21,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             }
         }
 
+        // ---------------------------------------  restrict_manage_posts
         public function filter_by_item()
         {
             $items = $this->get_list();
@@ -99,6 +100,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             return $options;
         }
+        // --------------------------------------- /restrict_manage_posts
     }
 }
 
