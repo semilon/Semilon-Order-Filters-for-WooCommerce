@@ -127,6 +127,26 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             return $join;
         }
+
+        /**
+         * Modify SQL Where for filtering the orders by any country name
+         *
+         *
+         * @param string $where WHERE part of the sql query
+         * @return string $where modified WHERE part of sql query
+         */
+        function add_item_where($where){
+            global $typenow, $wpdb;
+
+            if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
+                $item_tags = $this->generate_item_tags();
+                // prepare WHERE query part
+                $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
+                //$where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='{$_GET[$this->tag_name]}'  ";
+            }
+
+            return $where;
+        }
     }
 }
 
