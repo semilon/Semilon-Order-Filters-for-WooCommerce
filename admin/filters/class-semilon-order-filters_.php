@@ -11,6 +11,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         public function __construct($isActive)
         {
+            $this->load_filter($isActive);
         }
 
         public function load_filter($isActive) {
