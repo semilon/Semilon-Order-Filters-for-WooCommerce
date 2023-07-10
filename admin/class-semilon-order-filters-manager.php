@@ -5,6 +5,8 @@
 
 
 if (!class_exists('Semilon_Order_Filters_Manager')) {
+    require_once (__DIR__ . DIRECTORY_SEPARATOR . 'filters' . DIRECTORY_SEPARATOR . 'class-semilon-order-filters_.php');
+
     class Semilon_Order_Filters_Manager
     {
         private $base = __DIR__ . DIRECTORY_SEPARATOR . 'filters';
