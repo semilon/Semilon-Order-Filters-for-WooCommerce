@@ -20,6 +20,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list()
         {
+            $item_tags = $this->generate_item_tags();
         }
         private function generate_item_tags() {
             $tags = [];
