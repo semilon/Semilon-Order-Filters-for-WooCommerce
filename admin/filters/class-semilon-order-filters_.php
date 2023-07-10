@@ -62,6 +62,20 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $fetch_items;
         }
 
+        private function get_select_tag($items)
+        {
+            $first_choice = __( 'Filter by order ' . $this->name, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
+            $class= SEMILON_ORDER_FILTERS_ID . '_controller';
+
+            $options = $this->get_option_tags($items, $name);
+
+            return "<select name='{$name}' id='{$name}' class='{$class}'>
+                        <option value=''>{$first_choice}</option>
+                        {$options}
+                    </select>";
+
+        }
         protected function get_option_tags($items, $name) {
             $option_value = $this->item_tags[0][0];
             $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
