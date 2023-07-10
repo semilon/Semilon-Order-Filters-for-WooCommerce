@@ -23,6 +23,13 @@ if (!class_exists('Semilon_Order_Filters_Countries')) {
 
             parent::__construct($isActive);
         }
+
+        private function get_countries(){
+            $countries_obj = new WC_Countries();
+            $countries_array = $countries_obj->get_countries();
+
+            return  $countries_array ;
+        }
     }
 }
 
