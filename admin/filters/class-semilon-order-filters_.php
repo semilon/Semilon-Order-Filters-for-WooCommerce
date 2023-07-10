@@ -16,6 +16,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         public function filter_by_item()
         {
             $items = $this->get_list();
+            echo $this->get_select_tag($items);
         }
 
         protected function get_list()
