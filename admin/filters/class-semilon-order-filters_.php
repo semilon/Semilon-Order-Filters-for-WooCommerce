@@ -11,6 +11,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         public function __construct($isActive)
         {
+            $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $this->load_filter($isActive);
         }
 
@@ -75,25 +76,24 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         private function get_select_tag($items)
         {
             $first_choice = __( 'Filter by order ' . $this->name, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
-            $name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $class= SEMILON_ORDER_FILTERS_ID . '_controller';
 
-            $options = $this->get_option_tags($items, $name);
+            $options = $this->get_option_tags($items);
 
-            return "<select name='{$name}' id='{$name}' class='{$class}'>
+            return "<select name='{$this->tag_name}' id='{$this->tag_name}' class='{$class}'>
                         <option value=''>{$first_choice}</option>
                         {$options}
                     </select>";
 
         }
-        protected function get_option_tags($items, $name) {
+        protected function get_option_tags($items) {
             $option_value = $this->item_tags[0][0];
             $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
 
             $options = '';
             foreach($items as $item){
                 $value = esc_attr($item->$option_value);
-                $selected = esc_attr( isset( $_GET[$name] ) ? selected( $item->$option_value, $_GET[$name], false ) : '' );
+                $selected = esc_attr( isset( $_GET[$this->tag_name] ) ? selected( $item->$option_value, $_GET[$this->tag_name], false ) : '' );
                 $caption = esc_html( isset($item->$option_caption) ? $item->$option_caption : $item->$option_value );
                 $options .= "<option value='{$value}' {$selected}>{$caption}</option>";
             }
