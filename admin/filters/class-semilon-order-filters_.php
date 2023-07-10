@@ -22,6 +22,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
                 /*join filter*/
                 add_filter( 'posts_join',  array( $this, 'add_item_join' ) );
+                /*where query filter*/
+                add_filter( 'posts_where', array( $this, 'add_item_where' ) );
             }
         }
 
