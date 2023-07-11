@@ -186,9 +186,17 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
                 $item_tags = $this->generate_item_tags();
+
                 // prepare WHERE query part
-                $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
-                //$where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='{$_GET[$this->tag_name]}'  ";
+                switch ($this->tag_type) {
+                    case 'select':
+                        $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
+                        break;
+                    case 'text':
+                    default:
+                        $where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value LIKE '%{$_GET[$this->tag_name]}%'  ";
+                        break;
+                }
             }
 
             return $where;
