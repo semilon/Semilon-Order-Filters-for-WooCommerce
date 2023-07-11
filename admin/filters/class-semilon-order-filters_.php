@@ -163,6 +163,11 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             return $where;
         }
+
+        protected function get_query($query)
+        {
+            return $query;
+        }
     }
 }
 
