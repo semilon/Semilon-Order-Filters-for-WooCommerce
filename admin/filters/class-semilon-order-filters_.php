@@ -15,6 +15,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             'default' => 'yes'
         );
         protected $collection = '';
+        protected $tag_type = 'select';
 
         public function __construct($isActive)
         {
