@@ -9,8 +9,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
     {
         public $field = array();
 
-        protected function __construct($isActive)
+        public function __construct($isActive)
         {
+
             $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $this->load_filter($isActive);
         }
