@@ -7,10 +7,21 @@
 if (!class_exists('Semilon_Order_Filters_Main')) {
     class Semilon_Order_Filters_Main
     {
-        public $field = array();
+        public $field = array(
+            'name'	  => '',
+            'desc'    => '',
+            'id'	  => SEMILON_ORDER_FILTERS_ID . '_',
+            'type'	  => 'checkbox',
+            'default' => 'yse'
+        );
 
-        protected function __construct($isActive)
+        public function __construct($isActive)
         {
+            $name = str_replace('_', ' ', $this->collection);
+            $this->field['name'] = __(ucwords($name), SEMILON_ORDER_FILTERS_TRANSLATE_ID);
+            $this->field['desc'] = __('Filter ' . $name . ' buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID);
+            $this->field['id']  .=  $this->collection;
+
             $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $this->load_filter($isActive);
         }
@@ -41,15 +52,18 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             $joins = '';
             $wheres= '';
+            $select= [];
             foreach ($item_tags as $item_tag) {
                 $joins .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tag[0]} ON {$item_tag[0]}.post_id=posts.ID ";
                 $wheres.= " AND {$item_tag[0]}.meta_key ='{$item_tag[1]}' ";
+                $select[] = " {$item_tag[0]}.meta_value as '{$item_tag[0]}' ";
             }
+            $select = implode(', ', $select);
 
 
             $query = "
 				SELECT 
-				{$item_tags[0][0]}.meta_value as '{$item_tags[0][0]}'
+				{$select}
 				FROM {$wpdb->prefix}posts as posts
 				{$joins}
 				WHERE 1=1
@@ -58,9 +72,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 				GROUP BY {$item_tags[0][0]}.meta_value
 				Order BY {$item_tags[0][0]}.meta_value ASC";
 
-            //$query = $wpdb->prepare($query );
-            //$rows = $wpdb->get_results( $wpdb->prepare($query ));
-            $rows = $wpdb->get_results($query );
+            $query = $this->get_query($query);
+            $rows = $wpdb->get_results($query);
 
             $rows = $this->validate_fetch_items($rows);
 
@@ -85,7 +98,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         private function get_select_tag($items)
         {
-            $first_choice = __( 'Filter by order ' . $this->name, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $first_choice = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
             $class= SEMILON_ORDER_FILTERS_ID . '_controller';
 
             $options = $this->get_option_tags($items);
@@ -96,7 +109,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                     </select>";
 
         }
-        protected function get_option_tags($items) {
+        private function get_option_tags($items) {
             $option_value = $this->item_tags[0][0];
             $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
 
@@ -148,6 +161,11 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             }
 
             return $where;
+        }
+
+        protected function get_query($query)
+        {
+            return $query;
         }
     }
 }
