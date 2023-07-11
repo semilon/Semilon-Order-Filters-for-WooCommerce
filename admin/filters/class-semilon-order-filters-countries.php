@@ -8,7 +8,6 @@ if (!class_exists('Semilon_Order_Filters_Countries')) {
     class Semilon_Order_Filters_Countries extends Semilon_Order_Filters_Main
     {
         protected $name = 'country';
-        protected $colection = 'countries';
         protected $item_tags = array('billing_country' => '_billing_country');
 
         protected function validate_fetch_items($fetch_items) {

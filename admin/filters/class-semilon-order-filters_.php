@@ -12,18 +12,29 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             'desc'    => '',
             'id'	  => SEMILON_ORDER_FILTERS_ID . '_',
             'type'	  => 'checkbox',
-            'default' => 'yse'
+            'default' => 'yes'
         );
+        protected $collection = '';
 
         public function __construct($isActive)
         {
+            $this->fill_field();
+            $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
+            $this->load_filter($isActive);
+        }
+
+        private function fill_field() {
+            $this->fill_collection();
             $name = str_replace('_', ' ', $this->collection);
             $this->field['name'] = __(ucwords($name), SEMILON_ORDER_FILTERS_TRANSLATE_ID);
             $this->field['desc'] = __('Filter ' . $name . ' buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID);
             $this->field['id']  .=  $this->collection;
+        }
 
-            $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
-            $this->load_filter($isActive);
+        private function fill_collection()
+        {
+            $this->collection = strtolower(get_class($this));
+            $this->collection = str_replace(SEMILON_ORDER_FILTERS_ID.'_', '', $this->collection);
         }
 
         public function load_filter($isActive) {
