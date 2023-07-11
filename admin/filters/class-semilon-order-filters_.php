@@ -42,15 +42,18 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             $joins = '';
             $wheres= '';
+            $select= [];
             foreach ($item_tags as $item_tag) {
                 $joins .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tag[0]} ON {$item_tag[0]}.post_id=posts.ID ";
                 $wheres.= " AND {$item_tag[0]}.meta_key ='{$item_tag[1]}' ";
+                $select[] = " {$item_tag[0]}.meta_value as '{$item_tag[0]}' ";
             }
+            $select = implode(', ', $select);
 
 
             $query = "
 				SELECT 
-				{$item_tags[0][0]}.meta_value as '{$item_tags[0][0]}'
+				{$select}
 				FROM {$wpdb->prefix}posts as posts
 				{$joins}
 				WHERE 1=1
