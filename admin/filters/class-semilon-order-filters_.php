@@ -15,6 +15,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             'default' => 'yes'
         );
         protected $collection = '';
+        protected $tag_type = 'select';
 
         public function __construct($isActive)
         {
@@ -52,8 +53,16 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         // ---------------------------------------  restrict_manage_posts
         public function filter_by_item()
         {
-            $items = $this->get_list();
-            echo $this->get_select_tag($items);
+            switch ( $this->tag_type ) {
+                case 'select':
+                    $items = $this->get_list();
+                    echo $this->get_select_tag($items);
+                    break;
+                case 'text':
+                default:
+                    echo $this->get_text_tag();
+                    break;
+            }
         }
 
         protected function get_list()
@@ -107,6 +116,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $fetch_items;
         }
 
+        // --------------------------------  select tag
         private function get_select_tag($items)
         {
             $first_choice = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
@@ -133,6 +143,17 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             }
 
             return $options;
+        }
+        // --------------------------------  text tag
+        private function get_text_tag()
+        {
+            $label = str_replace('_', ' ', $this->name);
+            $placeholder = __( 'Filter by order ' . $label, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $class = SEMILON_ORDER_FILTERS_ID . '_controller';
+            $value = isset( $_GET[$this->tag_name] )  ? $_GET[$this->tag_name] : '';
+
+            return "<input type='text' name='{$this->tag_name}' id='{$this->tag_name}' class='{$class}' placeholder='{$placeholder}' value='{$value}' title='{$label}' />";
+
         }
         // --------------------------------------- /restrict_manage_posts
 
@@ -166,9 +187,17 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
                 $item_tags = $this->generate_item_tags();
+
                 // prepare WHERE query part
-                $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
-                //$where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='{$_GET[$this->tag_name]}'  ";
+                switch ($this->tag_type) {
+                    case 'select':
+                        $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
+                        break;
+                    case 'text':
+                    default:
+                        $where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value LIKE '%{$_GET[$this->tag_name]}%'  ";
+                        break;
+                }
             }
 
             return $where;
