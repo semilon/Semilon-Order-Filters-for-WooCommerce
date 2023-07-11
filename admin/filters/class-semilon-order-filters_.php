@@ -98,7 +98,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         private function get_select_tag($items)
         {
-            $first_choice = __( 'Filter by order ' . $this->name, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $first_choice = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
             $class= SEMILON_ORDER_FILTERS_ID . '_controller';
 
             $options = $this->get_option_tags($items);
