@@ -16,6 +16,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         );
         protected $name = '';
         protected $collection = '';
+        protected $item_tags = array();
         protected $tag_type = 'select';
 
         public function __construct($isActive)
