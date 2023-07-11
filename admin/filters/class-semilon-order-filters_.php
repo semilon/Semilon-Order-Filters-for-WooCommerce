@@ -14,6 +14,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             'type'	  => 'checkbox',
             'default' => 'yes'
         );
+        protected $name = '';
         protected $collection = '';
         protected $tag_type = 'select';
 
