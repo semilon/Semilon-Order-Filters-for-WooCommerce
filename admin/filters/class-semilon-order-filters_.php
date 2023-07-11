@@ -147,11 +147,12 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         // --------------------------------  text tag
         private function get_text_tag()
         {
-            $placeholder = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
-            $class= SEMILON_ORDER_FILTERS_ID . '_controller';
+            $label = str_replace('_', ' ', $this->name);
+            $placeholder = __( 'Filter by order ' . $label, SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $class = SEMILON_ORDER_FILTERS_ID . '_controller';
+            $value = isset( $_GET[$this->tag_name] )  ? $_GET[$this->tag_name] : '';
 
-
-            return "<input type='text' name='{$this->tag_name}' id='{$this->tag_name}' class='{$class}' placeholder='{$placeholder}' />";
+            return "<input type='text' name='{$this->tag_name}' id='{$this->tag_name}' class='{$class}' placeholder='{$placeholder}' value='{$value}' title='{$label}' />";
 
         }
         // --------------------------------------- /restrict_manage_posts
