@@ -17,13 +17,16 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         public function __construct($isActive)
         {
+            $this->fill_field();
+            $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
+            $this->load_filter($isActive);
+        }
+
+        private function fill_field() {
             $name = str_replace('_', ' ', $this->colection);
             $this->field['name'] = __(ucwords($name), SEMILON_ORDER_FILTERS_TRANSLATE_ID);
             $this->field['desc'] = __('Filter ' . $name . ' buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID);
             $this->field['id']  .=  $this->colection;
-
-            $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
-            $this->load_filter($isActive);
         }
 
         public function load_filter($isActive) {
