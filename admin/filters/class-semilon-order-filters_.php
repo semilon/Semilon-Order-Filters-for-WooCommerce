@@ -53,8 +53,12 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         // ---------------------------------------  restrict_manage_posts
         public function filter_by_item()
         {
-            $items = $this->get_list();
-            echo $this->get_select_tag($items);
+            switch ( $this->tag_type ) {
+                case 'select':
+                    $items = $this->get_list();
+                    echo $this->get_select_tag($items);
+                    break;
+            }
         }
 
         protected function get_list()
