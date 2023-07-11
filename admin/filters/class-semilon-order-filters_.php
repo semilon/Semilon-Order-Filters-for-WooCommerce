@@ -109,7 +109,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                     </select>";
 
         }
-        protected function get_option_tags($items) {
+        private function get_option_tags($items) {
             $option_value = $this->item_tags[0][0];
             $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
 
