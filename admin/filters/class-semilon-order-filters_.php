@@ -58,6 +58,10 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                     $items = $this->get_list();
                     echo $this->get_select_tag($items);
                     break;
+                case 'text':
+                default:
+                    echo $this->get_text_tag();
+                    break;
             }
         }
 
