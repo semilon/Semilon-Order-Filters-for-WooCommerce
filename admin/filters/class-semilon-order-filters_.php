@@ -12,7 +12,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             'desc'    => '',
             'id'	  => SEMILON_ORDER_FILTERS_ID . '_',
             'type'	  => 'checkbox',
-            'default' => 'yse'
+            'default' => 'yes'
         );
 
         public function __construct($isActive)
