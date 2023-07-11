@@ -72,9 +72,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 				GROUP BY {$item_tags[0][0]}.meta_value
 				Order BY {$item_tags[0][0]}.meta_value ASC";
 
-            //$query = $wpdb->prepare($query );
-            //$rows = $wpdb->get_results( $wpdb->prepare($query ));
-            $rows = $wpdb->get_results($query );
+            $query = $this->get_query($query);
+            $rows = $wpdb->get_results($query);
 
             $rows = $this->validate_fetch_items($rows);
 
