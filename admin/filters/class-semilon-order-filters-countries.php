@@ -24,6 +24,17 @@ if (!class_exists('Semilon_Order_Filters_Countries')) {
             parent::__construct($isActive);
         }
 
+        protected function validate_fetch_items($fetch_items) {
+            $countries = $this->get_countries();
+
+            foreach($fetch_items as $key=>$value){
+                if(isset($countries[$value->billing_country])) {
+                    $fetch_items[$key]->billing_country_title = $countries[$value->billing_country];
+                }
+            }
+
+            return $fetch_items;
+        }
         private function get_countries(){
             $countries_obj = new WC_Countries();
             $countries_array = $countries_obj->get_countries();
