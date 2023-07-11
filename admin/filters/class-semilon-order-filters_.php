@@ -112,6 +112,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $fetch_items;
         }
 
+        // --------------------------------  select tag
         private function get_select_tag($items)
         {
             $first_choice = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
@@ -138,6 +139,16 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             }
 
             return $options;
+        }
+        // --------------------------------  text tag
+        private function get_text_tag()
+        {
+            $placeholder = __( 'Filter by order ' . str_replace('_', ' ', $this->name), SEMILON_ORDER_FILTERS_TRANSLATE_ID );
+            $class= SEMILON_ORDER_FILTERS_ID . '_controller';
+
+
+            return "<input type='text' name='{$this->tag_name}' id='{$this->tag_name}' class='{$class}' placeholder='{$placeholder}' />";
+
         }
         // --------------------------------------- /restrict_manage_posts
 
