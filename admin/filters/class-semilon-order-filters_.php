@@ -7,10 +7,20 @@
 if (!class_exists('Semilon_Order_Filters_Main')) {
     class Semilon_Order_Filters_Main
     {
-        public $field = array();
+        public $field = array(
+            'name'	  => '',
+            'desc'    => '',
+            'id'	  => SEMILON_ORDER_FILTERS_ID . '_',
+            'type'	  => 'checkbox',
+            'default' => 'yse'
+        );
 
         public function __construct($isActive)
         {
+            $name = str_replace('_', ' ', $this->collection);
+            $this->field['name'] = __(ucwords($name), SEMILON_ORDER_FILTERS_TRANSLATE_ID);
+            $this->field['desc'] = __('Filter ' . $name . ' buy your products.', SEMILON_ORDER_FILTERS_TRANSLATE_ID);
+            $this->field['id']  .=  $this->collection;
 
             $this->tag_name = SEMILON_ORDER_FILTERS_ID . '_' . $this->name;
             $this->load_filter($isActive);
