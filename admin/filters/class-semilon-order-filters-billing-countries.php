@@ -4,8 +4,8 @@
     return;*/
 
 
-if (!class_exists('Semilon_Order_Filters_Countries')) {
-    class Semilon_Order_Filters_Countries extends Semilon_Order_Filters_Main
+if (!class_exists('Semilon_Order_Filters_Billing_Countries')) {
+    class Semilon_Order_Filters_Billing_Countries extends Semilon_Order_Filters_Main
     {
         protected $name = 'country';
         protected $joins = array(array(
