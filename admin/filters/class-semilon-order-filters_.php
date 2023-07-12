@@ -124,7 +124,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list_with_join_to_postmeta()
         {
-            $joins = $this->generate_item_tags();
+            $joins = $this->generate_joins_defaults();
             global $wpdb;
 
             $joins_command = '';
@@ -169,7 +169,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $query;
         }
 
-        private function generate_item_tags() {
+        private function generate_joins_defaults() {
             foreach($this->joins as $key=> $value){
                 if(!isset($value['select_field'])) {
                     $this->joins[$key]['select_field'] = 'meta_value';
@@ -268,7 +268,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 global $typenow, $wpdb;
 
                 if ('shop_order' === $typenow && isset($_GET[$this->tag_name]) && !empty($_GET[$this->tag_name])) {
-                    $item_tags = $this->generate_item_tags();
+                    $item_tags = $this->generate_joins_defaults();
                     $join .= "	LEFT JOIN  {$wpdb->prefix}{$item_tags[0]['side1table']} as {$item_tags[0]['name']} ON {$item_tags[0]['name']}.{$item_tags[0]['side1field']}={$wpdb->posts}.ID ";
                 }
             }
@@ -287,7 +287,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             global $typenow, $wpdb;
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
-                $item_tags = $this->generate_item_tags();
+                $item_tags = $this->generate_joins_defaults();
 
                 // prepare WHERE query part
                 switch ($this->tag_type) {
