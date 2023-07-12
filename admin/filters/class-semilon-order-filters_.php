@@ -219,7 +219,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @param string $where WHERE part of the sql query
          * @return string $where modified WHERE part of sql query
          */
-        public function add_item_where($where){
+        public function add_item_where($where) {
             global $typenow, $wpdb;
 
             if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
@@ -228,7 +228,12 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 // prepare WHERE query part
                 switch ($this->tag_type) {
                     case 'select':
-                        $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean( $_GET[$this->tag_name] ) );
+                        if(count($this->item_tags)) {
+                            $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean($_GET[$this->tag_name]));
+                        } else {
+                            $name = 'post_' . $this->name;
+                            $where .= $wpdb->prepare(" AND {$wpdb->posts}.{$name}='%s'", wc_clean($_GET[$this->tag_name]));
+                        }
                         break;
                     case 'text':
                     default:
