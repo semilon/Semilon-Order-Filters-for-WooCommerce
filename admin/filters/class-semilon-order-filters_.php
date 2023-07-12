@@ -36,7 +36,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 array(
                       array(
                           'name'  => 'billing_country',
-                          'value  => '_billing_country'
+                          'value'  => '_billing_country'
                       )
                   )
          *
@@ -44,7 +44,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 array(
                       array(
                           'name'  => 'billing_country',
-                          'value  => '_billing_country',
+                          'value'  => '_billing_country',
                           'select_field' => 'meta_value',
                           'where_field' => 'meta_key',
                           'side1table' => 'postmeta',
