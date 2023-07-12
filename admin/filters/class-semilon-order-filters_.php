@@ -16,7 +16,18 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         );
         protected $name = '';
         protected $collection = '';
+
+        /**
+         * @var array
+         * array of key-value array
+         * key list:
+         *   name - name of the join
+         *   value - value of the join
+         *   table - name of the table for the join [default: postmeta]
+         *   field - name of the field for the join [default: post_id]
+         */
         protected $joins = array();
+
         protected $tag_type = 'select';
 
         public function __construct($isActive)
