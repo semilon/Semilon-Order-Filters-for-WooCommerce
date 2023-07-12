@@ -199,12 +199,14 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @param string $join JOIN part of the sql query
          * @return string $join modified JOIN part of sql query
          */
-        public function add_item_join($join){
-            global $typenow, $wpdb;
+        public function add_item_join($join) {
+            if(count($this->item_tags)) {
+                global $typenow, $wpdb;
 
-            if ( 'shop_order' === $typenow && isset( $_GET[$this->tag_name] ) && ! empty( $_GET[$this->tag_name] ) ) {
-                $item_tags = $this->generate_item_tags();
-                $join .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tags[0][0]} ON {$item_tags[0][0]}.post_id={$wpdb->posts}.ID ";
+                if ('shop_order' === $typenow && isset($_GET[$this->tag_name]) && !empty($_GET[$this->tag_name])) {
+                    $item_tags = $this->generate_item_tags();
+                    $join .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tags[0][0]} ON {$item_tags[0][0]}.post_id={$wpdb->posts}.ID ";
+                }
             }
 
             return $join;
