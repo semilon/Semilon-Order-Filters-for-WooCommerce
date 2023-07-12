@@ -25,6 +25,16 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          *   value - value of the join
          *   table - name of the table for the join [default: postmeta]
          *   field - name of the field for the join [default: post_id]
+         *
+         * sample:
+         *      array(
+                    array(
+                        'name' => 'billing_country',
+                        'value'=> '_billing_country',
+                        'table' => 'postmeta',
+                        'field' => 'post_id'
+                    )
+                )
          */
         protected $joins = array();
 
