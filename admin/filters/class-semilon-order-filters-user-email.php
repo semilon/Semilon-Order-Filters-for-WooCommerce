@@ -8,7 +8,7 @@ if (!class_exists('Semilon_Order_Filters_User_Email')) {
     class Semilon_Order_Filters_User_Email extends Semilon_Order_Filters_Main
     {
         protected $name = 'user_email';
-        protected $item_tags = array(
+        protected $joins = array(
             'user_email'       => '_billing_email'
         );
     }

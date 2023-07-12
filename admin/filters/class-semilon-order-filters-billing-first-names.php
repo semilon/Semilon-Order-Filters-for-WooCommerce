@@ -9,7 +9,7 @@ if (!class_exists('Semilon_Order_Filters_Billing_First_Names')) {
     {
         protected $name = 'billing_first_name';
         protected $tag_type = 'text';
-        protected $item_tags = array(
+        protected $joins = array(
             'billing_first_name'       => '_billing_first_name'
         );
     }

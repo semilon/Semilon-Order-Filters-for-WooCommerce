@@ -16,7 +16,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         );
         protected $name = '';
         protected $collection = '';
-        protected $item_tags = array();
+        protected $joins = array();
         protected $tag_type = 'select';
 
         public function __construct($isActive)
@@ -69,7 +69,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list()
         {
-            $query = count($this->item_tags) ? $this->get_list_with_join_to_postmeta() : $this->get_list_from_post();
+            $query = count($this->joins) ? $this->get_list_with_join_to_postmeta() : $this->get_list_from_post();
 
             $query = $this->get_query($query);
 
@@ -129,16 +129,16 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         }
 
         private function generate_item_tags() {
-            $keys = array_keys($this->item_tags);
+            $keys = array_keys($this->joins);
             if(gettype($keys[0]) === 'integer'){
-                return $this->item_tags;
+                return $this->joins;
             }
 
             $tags = [];
-            foreach($this->item_tags as $key=>$value){
+            foreach($this->joins as $key=> $value){
                 $tags[] = [$key, $value];
             }
-            $this->item_tags = $tags;
+            $this->joins = $tags;
             return $tags;
         }
         protected function validate_fetch_items($fetch_items) {
@@ -160,9 +160,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         }
         private function get_option_tags($items) {
-            if(count($this->item_tags)) {
-                $option_value = $this->item_tags[0][0];
-                $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
+            if(count($this->joins)) {
+                $option_value = $this->joins[0][0];
+                $option_caption = isset($this->joins[1]) ? $this->joins[1][0] : $this->joins[0][0] . '_title';
             } else {
                 $option_value = $this->name;
                 $option_caption = $this->name;
@@ -200,7 +200,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @return string $join modified JOIN part of sql query
          */
         public function add_item_join($join) {
-            if(count($this->item_tags)) {
+            if(count($this->joins)) {
                 global $typenow, $wpdb;
 
                 if ('shop_order' === $typenow && isset($_GET[$this->tag_name]) && !empty($_GET[$this->tag_name])) {
@@ -228,7 +228,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 // prepare WHERE query part
                 switch ($this->tag_type) {
                     case 'select':
-                        if(count($this->item_tags)) {
+                        if(count($this->joins)) {
                             $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean($_GET[$this->tag_name]));
                         } else {
                             $name = 'post_' . $this->name;
