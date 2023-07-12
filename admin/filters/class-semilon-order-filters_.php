@@ -171,7 +171,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         private function generate_joins_defaults() {
             foreach($this->joins as $key=> $value){
-                if(!isset($value['select_field'])) {
+                if(!isset($value['select_field']) && ($key === 0)) {
                     $this->joins[$key]['select_field'] = 'meta_value';
                 }
 
