@@ -160,8 +160,13 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         }
         private function get_option_tags($items) {
-            $option_value = $this->item_tags[0][0];
-            $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
+            if(count($this->item_tags)) {
+                $option_value = $this->item_tags[0][0];
+                $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
+            } else {
+                $option_value = $this->name;
+                $option_caption = $this->name;
+            }
 
             $options = '';
             foreach($items as $item){
