@@ -132,6 +132,23 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             return $query;
         }
 
+        protected function get_list_from_post()
+        {
+            $name = 'post_' . $this->name;
+
+            global $wpdb;
+            $query = "
+				SELECT 
+				posts.{$name} as {$this->name}
+				FROM {$wpdb->prefix}posts as posts
+				WHERE 1=1
+				AND posts.post_type ='shop_order'
+				GROUP BY {$this->name}
+				Order BY {$this->name} ASC";
+
+            return $query;
+        }
+
         private function generate_item_tags() {
             $keys = array_keys($this->item_tags);
             if(gettype($keys[0]) === 'integer'){
