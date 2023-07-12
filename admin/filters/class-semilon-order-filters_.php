@@ -173,6 +173,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 $value = esc_attr($item->$option_value);
                 $selected = esc_attr( isset( $_GET[$this->tag_name] ) ? selected( $item->$option_value, $_GET[$this->tag_name], false ) : '' );
                 $caption = esc_html( isset($item->$option_caption) ? $item->$option_caption : $item->$option_value );
+                $caption = str_replace('wc-', '', $caption);
                 $options .= "<option value='{$value}' {$selected}>{$caption}</option>";
             }
 
