@@ -32,21 +32,29 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          *   group_by   - items to group [default: {name}.{select_field} | use (, ) for list of items]
          *   order_by   - items to order [default: {name}.{select_field}]
          *
-         * sample:
-         *      array(
-                    * array(
-                        * 'name'  => 'billing_country',
-                        * 'value  => '_billing_country',
-                        * 'select_field' => 'meta_value',
-                        * 'where_field' => 'meta_key',
-                        * 'side1table' => 'postmeta',
-                        * 'side1field' => 'post_id',
-                        * 'side2table' => 'posts',
-                        * 'side2field' => 'ID',
-                        * 'group_by' => 'billing_country.meta_value',
-                        * 'order_by' => 'billing_country.meta_value'
-                    * )
-                * )
+         * sample (short):
+                array(
+                      array(
+                          'name'  => 'billing_country',
+                          'value  => '_billing_country'
+                      )
+                  )
+         *
+         * sample (complete):
+                array(
+                      array(
+                          'name'  => 'billing_country',
+                          'value  => '_billing_country',
+                          'select_field' => 'meta_value',
+                          'where_field' => 'meta_key',
+                          'side1table' => 'postmeta',
+                          'side1field' => 'post_id',
+                          'side2table' => 'posts',
+                          'side2field' => 'ID',
+                          'group_by' => 'billing_country.meta_value',
+                          'order_by' => 'billing_country.meta_value'
+                      )
+                  )
          */
         protected $joins = array();
 
@@ -116,30 +124,30 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list_with_join_to_postmeta()
         {
-            $item_tags = $this->generate_item_tags();
+            $joins = $this->generate_item_tags();
             global $wpdb;
 
-            $joins = '';
-            $wheres= '';
-            $select= [];
-            foreach ($item_tags as $item_tag) {
-                $joins  .= "	LEFT JOIN  {$wpdb->prefix}{$item_tag['side1table']} as {$item_tag['name']} ON {$item_tag['name']}.{$item_tag['side1field']}={$item_tag['side2table']}.{$item_tag['side2field']} ";
-                $wheres .= " AND {$item_tag['name']}.{$item_tag['where_field']} ='{$item_tag['value']}' ";
-                $select[]= " {$item_tag['name']}.{$item_tag['select_field']} as '{$item_tag['name']}' ";
+            $joins_command = '';
+            $wheres_command= '';
+            $select_command= [];
+            foreach ($joins as $join) {
+                $joins_command  .= "	LEFT JOIN  {$wpdb->prefix}{$join['side1table']} as {$join['name']} ON {$join['name']}.{$join['side1field']}={$join['side2table']}.{$join['side2field']} ";
+                $wheres_command .= " AND {$join['name']}.{$join['where_field']} ='{$join['value']}' ";
+                $select_command[]= " {$join['name']}.{$join['select_field']} as '{$join['name']}' ";
             }
-            $select = implode(', ', $select);
+            $select_command = implode(', ', $select_command);
 
 
             $query = "
 				SELECT 
-				{$select}
+				{$select_command}
 				FROM {$wpdb->prefix}posts as posts
-				{$joins}
+				{$joins_command}
 				WHERE 1=1
 				AND posts.post_type ='shop_order'
-				{$wheres}
-				GROUP BY {$item_tags[0]['group_by']}
-				Order BY {$item_tags[0]['order_by']} ASC";
+				{$wheres_command}
+				GROUP BY {$joins[0]['group_by']}
+				Order BY {$joins[0]['order_by']} ASC";
 
             return $query;
         }
