@@ -16,7 +16,40 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         );
         protected $name = '';
         protected $collection = '';
-        protected $item_tags = array();
+
+        /**
+         * @var array
+         * array of key-value array
+         * key list:
+         *   name  - name of fetching data and the join     (REQUIRED)
+         *   value - value of the for fetching data         (REQUIRED)
+         *   select_field - name of the field for fetching data [default: meta_value]
+         *   where_field - name of the field for fetching data [default: meta_key]
+         *   side1table - name of the table for the join [default: postmeta]
+         *   side1field - name of the table for the join [default: post_id]
+         *   side2table - name of the table for the join [default: posts]
+         *   side2field - name of the table for the join [default: ID]
+         *   group_by   - items to group [default: {name}.{select_field} | use (, ) for list of items]
+         *   order_by   - items to order [default: {name}.{select_field}]
+         *
+         * sample:
+         *      array(
+                    * array(
+                        * 'name'  => 'billing_country',
+                        * 'value  => '_billing_country',
+                        * 'select_field' => 'meta_value',
+                        * 'where_field' => 'meta_key',
+                        * 'side1table' => 'postmeta',
+                        * 'side1field' => 'post_id',
+                        * 'side2table' => 'posts',
+                        * 'side2field' => 'ID',
+                        * 'group_by' => 'billing_country.meta_value',
+                        * 'order_by' => 'billing_country.meta_value'
+                    * )
+                * )
+         */
+        protected $joins = array();
+
         protected $tag_type = 'select';
 
         public function __construct($isActive)
@@ -69,7 +102,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list()
         {
-            $query = count($this->item_tags) ? $this->get_list_with_join_to_postmeta() : $this->get_list_from_post();
+            $query = count($this->joins) ? $this->get_list_with_join_to_postmeta() : $this->get_list_from_post();
 
             $query = $this->get_query($query);
 
@@ -90,9 +123,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             $wheres= '';
             $select= [];
             foreach ($item_tags as $item_tag) {
-                $joins .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tag[0]} ON {$item_tag[0]}.post_id=posts.ID ";
-                $wheres.= " AND {$item_tag[0]}.meta_key ='{$item_tag[1]}' ";
-                $select[] = " {$item_tag[0]}.meta_value as '{$item_tag[0]}' ";
+                $joins  .= "	LEFT JOIN  {$wpdb->prefix}{$item_tag['side1table']} as {$item_tag['name']} ON {$item_tag['name']}.{$item_tag['side1field']}={$item_tag['side2table']}.{$item_tag['side2field']} ";
+                $wheres .= " AND {$item_tag['name']}.{$item_tag['where_field']} ='{$item_tag['value']}' ";
+                $select[]= " {$item_tag['name']}.{$item_tag['select_field']} as '{$item_tag['name']}' ";
             }
             $select = implode(', ', $select);
 
@@ -105,8 +138,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 				WHERE 1=1
 				AND posts.post_type ='shop_order'
 				{$wheres}
-				GROUP BY {$item_tags[0][0]}.meta_value
-				Order BY {$item_tags[0][0]}.meta_value ASC";
+				GROUP BY {$item_tags[0]['group_by']}
+				Order BY {$item_tags[0]['order_by']} ASC";
 
             return $query;
         }
@@ -129,17 +162,40 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
         }
 
         private function generate_item_tags() {
-            $keys = array_keys($this->item_tags);
-            if(gettype($keys[0]) === 'integer'){
-                return $this->item_tags;
-            }
+            foreach($this->joins as $key=> $value){
+                if(!isset($value['select_field'])) {
+                    $this->joins[$key]['select_field'] = 'meta_value';
+                }
 
-            $tags = [];
-            foreach($this->item_tags as $key=>$value){
-                $tags[] = [$key, $value];
+                if(!isset($value['where_field'])) {
+                    $this->joins[$key]['where_field'] = 'meta_key';
+                }
+
+                if(!isset($value['side1table'])) {
+                    $this->joins[$key]['side1table'] = 'postmeta';
+                }
+
+                if(!isset($value['side1field'])) {
+                    $this->joins[$key]['side1field'] = 'post_id';
+                }
+
+                if(!isset($value['side2table'])) {
+                    $this->joins[$key]['side2table'] = 'posts';
+                }
+
+                if(!isset($value['side2field'])) {
+                    $this->joins[$key]['side2field'] = 'ID';
+                }
+
+                if(!isset($value['group_by'])) {
+                    $this->joins[$key]['group_by'] = $this->joins[$key]['name'] . '.' . $this->joins[$key]['select_field'];
+                }
+
+                if(!isset($value['order_by'])) {
+                    $this->joins[$key]['order_by'] = $this->joins[$key]['name'] . '.' . $this->joins[$key]['select_field'];
+                }
             }
-            $this->item_tags = $tags;
-            return $tags;
+            return $this->joins;
         }
         protected function validate_fetch_items($fetch_items) {
             return $fetch_items;
@@ -160,9 +216,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         }
         private function get_option_tags($items) {
-            if(count($this->item_tags)) {
-                $option_value = $this->item_tags[0][0];
-                $option_caption = isset($this->item_tags[1]) ? $this->item_tags[1][0] : $this->item_tags[0][0] . '_title';
+            if(count($this->joins)) {
+                $option_value = $this->joins[0]['name'];
+                $option_caption = isset($this->joins[1]) ? $this->joins[1]['name'] : $this->joins[0]['name'] . '_title';
             } else {
                 $option_value = $this->name;
                 $option_caption = $this->name;
@@ -200,12 +256,12 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          * @return string $join modified JOIN part of sql query
          */
         public function add_item_join($join) {
-            if(count($this->item_tags)) {
+            if(count($this->joins)) {
                 global $typenow, $wpdb;
 
                 if ('shop_order' === $typenow && isset($_GET[$this->tag_name]) && !empty($_GET[$this->tag_name])) {
                     $item_tags = $this->generate_item_tags();
-                    $join .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tags[0][0]} ON {$item_tags[0][0]}.post_id={$wpdb->posts}.ID ";
+                    $join .= "	LEFT JOIN  {$wpdb->prefix}{$item_tags[0]['side1table']} as {$item_tags[0]['name']} ON {$item_tags[0]['name']}.{$item_tags[0]['side1field']}={$wpdb->posts}.ID ";
                 }
             }
 
@@ -228,8 +284,8 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                 // prepare WHERE query part
                 switch ($this->tag_type) {
                     case 'select':
-                        if(count($this->item_tags)) {
-                            $where .= $wpdb->prepare(" AND {$item_tags[0][0]}.meta_key='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value='%s'", wc_clean($_GET[$this->tag_name]));
+                        if(count($this->joins)) {
+                            $where .= $wpdb->prepare(" AND {$item_tags[0]['name']}.{$item_tags[0]['where_field']}='{$item_tags[0]['value']}' AND {$item_tags[0]['name']}.{$item_tags[0]['select_field']}='%s'", wc_clean($_GET[$this->tag_name]));
                         } else {
                             $name = 'post_' . $this->name;
                             $where .= $wpdb->prepare(" AND {$wpdb->posts}.{$name}='%s'", wc_clean($_GET[$this->tag_name]));
@@ -237,7 +293,7 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
                         break;
                     case 'text':
                     default:
-                        $where .= " AND {$item_tags[0][0]}.meta_key ='{$item_tags[0][1]}' AND {$item_tags[0][0]}.meta_value LIKE '%{$_GET[$this->tag_name]}%'  ";
+                        $where .= " AND {$item_tags[0]['name']}.{$item_tags[0]['where_field']} ='{$item_tags[0]['value']}' AND {$item_tags[0]['name']}.{$item_tags[0]['select_field']} LIKE '%{$_GET[$this->tag_name]}%'  ";
                         break;
                 }
             }
