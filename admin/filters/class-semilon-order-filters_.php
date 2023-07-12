@@ -32,21 +32,29 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
          *   group_by   - items to group [default: {name}.{select_field} | use (, ) for list of items]
          *   order_by   - items to order [default: {name}.{select_field}]
          *
-         * sample:
-         *      array(
-                    * array(
-                        * 'name'  => 'billing_country',
-                        * 'value  => '_billing_country',
-                        * 'select_field' => 'meta_value',
-                        * 'where_field' => 'meta_key',
-                        * 'side1table' => 'postmeta',
-                        * 'side1field' => 'post_id',
-                        * 'side2table' => 'posts',
-                        * 'side2field' => 'ID',
-                        * 'group_by' => 'billing_country.meta_value',
-                        * 'order_by' => 'billing_country.meta_value'
-                    * )
-                * )
+         * sample (short):
+                array(
+                      array(
+                          'name'  => 'billing_country',
+                          'value  => '_billing_country'
+                      )
+                  )
+         *
+         * sample (complete):
+                array(
+                      array(
+                          'name'  => 'billing_country',
+                          'value  => '_billing_country',
+                          'select_field' => 'meta_value',
+                          'where_field' => 'meta_key',
+                          'side1table' => 'postmeta',
+                          'side1field' => 'post_id',
+                          'side2table' => 'posts',
+                          'side2field' => 'ID',
+                          'group_by' => 'billing_country.meta_value',
+                          'order_by' => 'billing_country.meta_value'
+                      )
+                  )
          */
         protected $joins = array();
 
