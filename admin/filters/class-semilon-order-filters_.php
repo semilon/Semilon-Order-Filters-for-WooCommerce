@@ -133,7 +133,9 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
             foreach ($joins as $join) {
                 $joins_command  .= "	LEFT JOIN  {$wpdb->prefix}{$join['side1table']} as {$join['name']} ON {$join['name']}.{$join['side1field']}={$join['side2table']}.{$join['side2field']} ";
                 $wheres_command .= " AND {$join['name']}.{$join['where_field']} ='{$join['value']}' ";
-                $select_command[]= " {$join['name']}.{$join['select_field']} as '{$join['name']}' ";
+                if(isset($join['select_field'])) {
+                    $select_command[] = " {$join['name']}.{$join['select_field']} as '{$join['name']}' ";
+                }
             }
             $select_command = implode(', ', $select_command);
 
