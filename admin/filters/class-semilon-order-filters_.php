@@ -69,32 +69,11 @@ if (!class_exists('Semilon_Order_Filters_Main')) {
 
         protected function get_list()
         {
-            $item_tags = $this->generate_item_tags();
-            global $wpdb;
-
-            $joins = '';
-            $wheres= '';
-            $select= [];
-            foreach ($item_tags as $item_tag) {
-                $joins .= "	LEFT JOIN  {$wpdb->prefix}postmeta as {$item_tag[0]} ON {$item_tag[0]}.post_id=posts.ID ";
-                $wheres.= " AND {$item_tag[0]}.meta_key ='{$item_tag[1]}' ";
-                $select[] = " {$item_tag[0]}.meta_value as '{$item_tag[0]}' ";
-            }
-            $select = implode(', ', $select);
-
-
-            $query = "
-				SELECT 
-				{$select}
-				FROM {$wpdb->prefix}posts as posts
-				{$joins}
-				WHERE 1=1
-				AND posts.post_type ='shop_order'
-				{$wheres}
-				GROUP BY {$item_tags[0][0]}.meta_value
-				Order BY {$item_tags[0][0]}.meta_value ASC";
+            $query = count($this->item_tags) ? $this->get_list_with_join_to_postmeta() : $this->get_list_from_post();
 
             $query = $this->get_query($query);
+
+            global $wpdb;
             $rows = $wpdb->get_results($query);
 
             $rows = $this->validate_fetch_items($rows);
